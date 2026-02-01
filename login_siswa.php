@@ -158,21 +158,147 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         input, textarea, select { -webkit-user-select: text; }
-        body { font-family: system-ui, sans-serif; background: #1e40af; height: 100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-        .container { background:#fff; padding:40px; border-radius:12px; width:100%; max-width:380px; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
-        .logo { width:80px; height:80px; margin:0 auto 15px; display:block; border-radius:8px; background:#f8f9fa; padding:5px; }
-        .title { color:#1e40af; text-align:center; font-size:1.6rem; font-weight:700; margin-bottom:8px; }
-        .subtitle { color:#64748b; text-align:center; margin-bottom:25px; font-size:14px; }
-        .input { width:100%; padding:14px; border:1px solid #d1d5db; border-radius:6px; margin-bottom:16px; font-size:16px; font-family:system-ui; }
-        .input:focus { outline:none; border-color:#1e40af; box-shadow:0 0 0 2px rgba(30,64,175,0.1); }
-        .btn { width:100%; padding:14px; background:#1e40af; color:#fff; border:0; border-radius:6px; cursor:pointer; font-size:1rem; font-weight:600; }
-        .btn:active { background:#1e3a8a; }
-        .btn2 { width:100%; padding:12px; background:transparent; color:#dc2626; border:1px solid #dc2626; border-radius:6px; text-align:center; text-decoration:none; display:block; font-weight:500; }
-        .error { background:#fef2f2; border:1px solid #fca5a5; color:#dc2626; padding:12px; border-radius:6px; margin:15px 0; text-align:center; font-size:14px; }
-        .divider { text-align:center; margin:20px 0; color:#9ca3af; font-size:14px; }
-        .info { background:#dbeafe; border:1px solid #93c5fd; color:#1e40af; padding:10px; border-radius:6px; margin:10px 0; font-size:12px; text-align:center; }
-        .info.new { background:#fef3c7; border:1px solid #fcd34d; color:#92400e; }
-        .hidden { display:none; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+        .container { 
+            background: #fff; 
+            padding: 48px 32px; 
+            border-radius: 16px; 
+            width: 100%; 
+            max-width: 400px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+        }
+        .logo { 
+            width: 72px; 
+            height: 72px; 
+            margin: 0 auto 24px; 
+            display: block; 
+            border-radius: 12px; 
+            object-fit: cover;
+        }
+        .title { 
+            color: #1a1a1a; 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: 600; 
+            margin-bottom: 6px; 
+            letter-spacing: -0.5px;
+        }
+        .subtitle { 
+            color: #6b7280; 
+            text-align: center; 
+            margin-bottom: 32px; 
+            font-size: 14px; 
+        }
+        .input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1.5px solid #e5e7eb; 
+            border-radius: 8px; 
+            margin-bottom: 16px; 
+            font-size: 15px; 
+            font-family: inherit; 
+            transition: all 0.2s;
+            background: #fafafa;
+        }
+        .input:focus { 
+            outline: none; 
+            border-color: #667eea; 
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); 
+        }
+        .btn { 
+            width: 100%; 
+            padding: 14px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff; 
+            border: 0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 15px; 
+            font-weight: 600; 
+            transition: transform 0.1s, box-shadow 0.2s;
+            margin-top: 8px;
+        }
+        .btn:hover { 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .btn:active { 
+            transform: translateY(0);
+        }
+        .btn2 { 
+            width: 100%; 
+            padding: 12px; 
+            background: transparent; 
+            color: #6b7280; 
+            border: 1.5px solid #e5e7eb; 
+            border-radius: 8px; 
+            text-align: center; 
+            text-decoration: none; 
+            display: block; 
+            font-weight: 500; 
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .btn2:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+        .error { 
+            background: #fef2f2; 
+            border: 1.5px solid #fecaca; 
+            color: #dc2626; 
+            padding: 12px; 
+            border-radius: 8px; 
+            margin-bottom: 16px; 
+            text-align: center; 
+            font-size: 14px; 
+        }
+        .divider { 
+            text-align: center; 
+            margin: 24px 0; 
+            color: #9ca3af; 
+            font-size: 13px; 
+            position: relative;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e5e7eb;
+        }
+        .divider span {
+            background: #fff;
+            padding: 0 12px;
+            position: relative;
+        }
+        .info { 
+            background: #eff6ff; 
+            border: 1.5px solid #bfdbfe; 
+            color: #1e40af; 
+            padding: 12px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            font-size: 13px; 
+            text-align: center; 
+        }
+        .info.new { 
+            background: #fffbeb; 
+            border: 1.5px solid #fde68a; 
+            color: #92400e; 
+        }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -184,7 +310,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <?php if(!empty($device_id)): ?>
         <div class="info new">
-            📱 Login dari aplikasi mobile
+            Login dari aplikasi mobile
         </div>
         <?php endif; ?>
 
