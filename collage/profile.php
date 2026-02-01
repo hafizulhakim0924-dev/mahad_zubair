@@ -933,7 +933,8 @@ function getCombinedPaymentHistory($conn, $student_id, $student_name) {
 // Get combined payment history
 $my_payments = getCombinedPaymentHistory($conn, $student_id, $student['name']);
 
-$current_tab = $_GET['tab'] ?? 'bayar';
+$current_tab = $_GET['tab'] ?? null;
+$show_menu = empty($current_tab);
 ?>
 
 <!DOCTYPE html>
@@ -1209,6 +1210,57 @@ input, textarea, select {
             .receipt-paper { padding: 20px 15px; }
             .receipt-table { font-size: 11px; }
         }
+        
+        /* Menu Grid Styles */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 20px;
+        }
+        @media (max-width: 480px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+        .menu-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .menu-card:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+        }
+        .menu-card:active {
+            transform: translateY(-2px);
+        }
+        .menu-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+        .menu-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0;
+        }
+        .menu-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
@@ -1223,18 +1275,46 @@ input, textarea, select {
             <p><?= htmlspecialchars($student['name']) ?> - <?= htmlspecialchars($student['class']) ?></p>
         </div>
 
-        <div class="tabs">
-            <a href="?tab=bayar" class="<?= $current_tab == 'bayar' ? 'active' : '' ?>" title="Bayar Tagihan">💳 <span class="tab-text">Bayar</span></a>
-            <a href="?tab=pending" class="<?= $current_tab == 'pending' ? 'active' : '' ?>" title="Status Pembayaran">⏳ <span class="tab-text">Status</span></a>
-            <a href="?tab=tagihan" class="<?= $current_tab == 'tagihan' ? 'active' : '' ?>" title="Status Tagihan">📋 <span class="tab-text">Tagihan</span></a>
-            <a href="?tab=history" class="<?= $current_tab == 'history' ? 'active' : '' ?>" title="Riwayat Pembayaran">📜 <span class="tab-text">Riwayat</span></a>
-            <a href="?tab=absensi" class="<?= $current_tab == 'absensi' ? 'active' : '' ?>" title="Rekap Absensi">✅ <span class="tab-text">Absensi</span></a>
-            <a href="?tab=belanja" class="<?= $current_tab == 'belanja' ? 'active' : '' ?>" title="Belanja Barang">🛒 <span class="tab-text">Belanja</span></a>
-            <a href="?tab=voucher" class="<?= $current_tab == 'voucher' ? 'active' : '' ?>" title="Voucher Pembayaran">🎫 <span class="tab-text">Voucher</span></a>
-        </div>
+        <?php if ($show_menu): ?>
+            <!-- Halaman Pilihan Menu -->
+            <div class="content">
+                <div class="menu-grid">
+                    <a href="?tab=bayar" class="menu-card">
+                        <div class="menu-icon">💳</div>
+                        <div class="menu-title">Bayar Tagihan</div>
+                        <div class="menu-subtitle">Lunasi tagihan sekolah</div>
+                    </a>
+                    <a href="?tab=belanja" class="menu-card">
+                        <div class="menu-icon">📚</div>
+                        <div class="menu-title">Beli Buku</div>
+                        <div class="menu-subtitle">Beli buku & barang</div>
+                    </a>
+                    <a href="?tab=voucher" class="menu-card">
+                        <div class="menu-icon">🎫</div>
+                        <div class="menu-title">Claim Voucher</div>
+                        <div class="menu-subtitle">Tukar voucher pembayaran</div>
+                    </a>
+                    <a href="?tab=absensi" class="menu-card">
+                        <div class="menu-icon">✅</div>
+                        <div class="menu-title">Absensi</div>
+                        <div class="menu-subtitle">Lihat rekap absensi</div>
+                    </a>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="tabs">
+                <a href="?" title="Menu Utama">🏠 <span class="tab-text">Menu</span></a>
+                <a href="?tab=bayar" class="<?= $current_tab == 'bayar' ? 'active' : '' ?>" title="Bayar Tagihan">💳 <span class="tab-text">Bayar</span></a>
+                <a href="?tab=pending" class="<?= $current_tab == 'pending' ? 'active' : '' ?>" title="Status Pembayaran">⏳ <span class="tab-text">Status</span></a>
+                <a href="?tab=tagihan" class="<?= $current_tab == 'tagihan' ? 'active' : '' ?>" title="Status Tagihan">📋 <span class="tab-text">Tagihan</span></a>
+                <a href="?tab=history" class="<?= $current_tab == 'history' ? 'active' : '' ?>" title="Riwayat Pembayaran">📜 <span class="tab-text">Riwayat</span></a>
+                <a href="?tab=absensi" class="<?= $current_tab == 'absensi' ? 'active' : '' ?>" title="Rekap Absensi">✅ <span class="tab-text">Absensi</span></a>
+                <a href="?tab=belanja" class="<?= $current_tab == 'belanja' ? 'active' : '' ?>" title="Belanja Barang">🛒 <span class="tab-text">Belanja</span></a>
+                <a href="?tab=voucher" class="<?= $current_tab == 'voucher' ? 'active' : '' ?>" title="Voucher Pembayaran">🎫 <span class="tab-text">Voucher</span></a>
+            </div>
 
-        <div class="content">
-            <?php if ($current_tab == 'bayar'): ?>
+            <div class="content">
+                <?php if ($current_tab == 'bayar'): ?>
                 <?php 
                 $unpaid_bills = array_filter($student_bills, function($amount) { return $amount > 0; });
                 ?>
@@ -1643,7 +1723,8 @@ input, textarea, select {
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
     </div>
 
     <!-- Payment Modal -->
