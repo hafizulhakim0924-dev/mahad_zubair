@@ -1246,9 +1246,33 @@ input, textarea, select {
             transform: translateY(-2px);
         }
         .menu-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 32px;
             line-height: 1;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+        }
+        .menu-card:nth-child(1) .menu-icon {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        .menu-card:nth-child(2) .menu-icon {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+        .menu-card:nth-child(3) .menu-icon {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+        .menu-card:nth-child(4) .menu-icon {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
         }
         .menu-title {
             font-size: 15px;
@@ -1280,22 +1304,42 @@ input, textarea, select {
             <div class="content">
                 <div class="menu-grid">
                     <a href="?tab=bayar" class="menu-card">
-                        <div class="menu-icon">💳</div>
+                        <div class="menu-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                        </div>
                         <div class="menu-title">Bayar Tagihan</div>
                         <div class="menu-subtitle">Lunasi tagihan sekolah</div>
                     </a>
                     <a href="?tab=belanja" class="menu-card">
-                        <div class="menu-icon">📚</div>
+                        <div class="menu-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                        </div>
                         <div class="menu-title">Beli Buku</div>
                         <div class="menu-subtitle">Beli buku & barang</div>
                     </a>
                     <a href="?tab=voucher" class="menu-card">
-                        <div class="menu-icon">🎫</div>
+                        <div class="menu-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12c0 1.66-1.34 3-3 3H6c-1.66 0-3-1.34-3-3s1.34-3 3-3h12c1.66 0 3 1.34 3 3z"></path>
+                                <path d="M9 12h6"></path>
+                            </svg>
+                        </div>
                         <div class="menu-title">Claim Voucher</div>
                         <div class="menu-subtitle">Tukar voucher pembayaran</div>
                     </a>
                     <a href="?tab=absensi" class="menu-card">
-                        <div class="menu-icon">✅</div>
+                        <div class="menu-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
                         <div class="menu-title">Absensi</div>
                         <div class="menu-subtitle">Lihat rekap absensi</div>
                     </a>
