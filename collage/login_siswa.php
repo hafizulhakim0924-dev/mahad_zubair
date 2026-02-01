@@ -8,9 +8,20 @@ $dbname = "ypikhair_datautama";
 
 // Redirect jika sudah login
 if (isset($_SESSION['student'])) {
-    header('Location: profile.php');
+    $action = $_GET['action'] ?? null;
+    $tab_map = [
+        'bayar' => 'bayar',
+        'belanja' => 'belanja',
+        'voucher' => 'voucher',
+        'absensi' => 'absensi'
+    ];
+    $redirect_tab = isset($tab_map[$action]) ? '?tab=' . $tab_map[$action] : '';
+    header('Location: profile.php' . $redirect_tab);
     exit;
 }
+
+// Get action parameter
+$action = $_GET['action'] ?? $_POST['action'] ?? null;
 
 // ======================================================
 // AUTO LOGIN UNTUK RETURNING USER
@@ -52,7 +63,14 @@ if (isset($_GET['device_id']) && isset($_GET['token'])) {
                 $stmt2->close();
                 
                 $conn->close();
-                header("Location: profile.php");
+                $tab_map = [
+                    'bayar' => 'bayar',
+                    'belanja' => 'belanja',
+                    'voucher' => 'voucher',
+                    'absensi' => 'absensi'
+                ];
+                $redirect_tab = isset($tab_map[$action]) ? '?tab=' . $tab_map[$action] : '';
+                header("Location: profile.php" . $redirect_tab);
                 exit;
             }
             $stmt->close();
@@ -137,7 +155,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $conn->close();
-            header("Location: profile.php");
+            $tab_map = [
+                'bayar' => 'bayar',
+                'belanja' => 'belanja',
+                'voucher' => 'voucher',
+                'absensi' => 'absensi'
+            ];
+            $redirect_tab = isset($tab_map[$action]) ? '?tab=' . $tab_map[$action] : '';
+            header("Location: profile.php" . $redirect_tab);
             exit;
 
         } else {
@@ -310,6 +335,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             color: #92400e; 
         }
         .hidden { display: none; }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        @media (max-width: 480px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .menu-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: block;
+        }
+        .menu-card:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        .menu-card:active {
+            transform: translateY(0);
+        }
+        .menu-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+        .menu-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: color 0.2s;
+        }
+        .back-btn:hover {
+            color: #667eea;
+        }
     </style>
 </head>
 <body>
@@ -319,13 +399,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h1 class="title">Mahad Ibnu Zubair</h1>
         <p class="subtitle">Portal Siswa</p>
 
-        <?php if(!empty($device_id)): ?>
-        <div class="info new">
-            Login dari aplikasi mobile
-        </div>
-        <?php endif; ?>
+        <?php if(empty($action)): ?>
+            <!-- Halaman Pilihan Menu -->
+            <div class="menu-grid">
+                <a href="?action=bayar" class="menu-card">
+                    <div class="menu-icon">💳</div>
+                    <div class="menu-title">Bayar Tagihan</div>
+                </a>
+                <a href="?action=belanja" class="menu-card">
+                    <div class="menu-icon">📚</div>
+                    <div class="menu-title">Beli Buku</div>
+                </a>
+                <a href="?action=voucher" class="menu-card">
+                    <div class="menu-icon">🎫</div>
+                    <div class="menu-title">Claim Voucher</div>
+                </a>
+                <a href="?action=absensi" class="menu-card">
+                    <div class="menu-icon">✅</div>
+                    <div class="menu-title">Absensi</div>
+                </a>
+            </div>
+        <?php else: ?>
+            <!-- Halaman Login -->
+            <?php if(!empty($device_id)): ?>
+            <div class="info new">
+                Login dari aplikasi mobile
+            </div>
+            <?php endif; ?>
 
-        <form method="POST" id="loginForm">
+            <a href="?" class="back-btn">← Kembali ke pilihan</a>
+
+            <form method="POST" id="loginForm">
             <input 
                 type="text" 
                 name="student_id" 
@@ -344,22 +448,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 autocomplete="current-password"
             >
             
-            <!-- HIDDEN FIELDS untuk device_id dan token dari app -->
-            <?php if(!empty($device_id)): ?>
-            <input type="hidden" name="device_id" value="<?= htmlspecialchars($device_id) ?>">
-            <input type="hidden" name="token" value="<?= htmlspecialchars($fcm_token) ?>">
+                <!-- HIDDEN FIELDS untuk device_id dan token dari app -->
+                <?php if(!empty($device_id)): ?>
+                <input type="hidden" name="device_id" value="<?= htmlspecialchars($device_id) ?>">
+                <input type="hidden" name="token" value="<?= htmlspecialchars($fcm_token) ?>">
+                <?php endif; ?>
+                
+                <!-- HIDDEN FIELD untuk action -->
+                <input type="hidden" name="action" value="<?= htmlspecialchars($action) ?>">
+                
+                <button type="submit" class="btn">Masuk</button>
+            </form>
+
+            <?php if($error): ?>
+            <div class="error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
-            
-            <button type="submit" class="btn">Masuk</button>
-        </form>
 
-        <?php if($error): ?>
-        <div class="error"><?= htmlspecialchars($error) ?></div>
+            <div class="divider"><span>atau</span></div>
+            <a href="register_siswa.php" class="btn2 primary">Daftar Akun Baru</a>
+            <a href="change_password.php" class="btn2">Ubah Password</a>
         <?php endif; ?>
-
-        <div class="divider"><span>atau</span></div>
-        <a href="register_siswa.php" class="btn2 primary">Daftar Akun Baru</a>
-        <a href="change_password.php" class="btn2">Ubah Password</a>
     </div>
 
     <script>
